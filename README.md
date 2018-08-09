@@ -1,5 +1,7 @@
 # NgxCandeactivateTest
 
+Demonstrates how to write a unit test for an Angular CanDeactivate route guard. Incorporates a common use case of a confirmation dialog that is shown, for example, when a form is dirty, giving the user the opportunity to stay or leave.  It leverages PrimeNG's component library to open a confirmation dialog that is asynchronous.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.2.
 
 ## Development server
