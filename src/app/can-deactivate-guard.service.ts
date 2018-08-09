@@ -7,9 +7,6 @@ import { CanDeactivateGuarded } from './can-deactivate-guarded';
   providedIn: 'root'
 })
 export class CanDeactivateGuardService implements CanDeactivate<CanDeactivateGuarded> {
-
-  constructor() { }
-
   canDeactivate(component: CanDeactivateGuarded) {
     return component.canDeactivate ? component.canDeactivate() : true;
   }
