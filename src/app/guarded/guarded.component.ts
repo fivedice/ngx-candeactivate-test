@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CanDeactivateGuarded } from '../can-deactivate-guarded.interface';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/primeng';
@@ -9,7 +8,7 @@ import { ConfirmationService } from 'primeng/primeng';
   templateUrl: './guarded.component.html',
   styleUrls: ['./guarded.component.scss']
 })
-export class GuardedComponent implements CanDeactivateGuarded {
+export class GuardedComponent {
 
   isGuarded = false;
 
