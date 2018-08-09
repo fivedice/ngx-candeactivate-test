@@ -6,9 +6,9 @@ import { CanDeactivate } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { ConfirmationService } from 'primeng/primeng';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CanDeactivateGuarded } from './can-deactivate-guarded';
 
-
-class MockComponent extends GuardedComponent implements CanDeactivate<MockComponent> {
+class MockComponent implements CanDeactivateGuarded {
   // Set this to the value you want to mock being returned from GuardedComponent
   returnValue: boolean | Observable<boolean>;
 
@@ -18,48 +18,36 @@ class MockComponent extends GuardedComponent implements CanDeactivate<MockCompon
 }
 
 describe('CanDeactivateGuardService', () => {
+  let testComponent: MockComponent;
   let service: CanDeactivateGuardService;
-  // The mock for our GuardedComponent.
-  let mockComponent: MockComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        // Router is a dependency of GuardedComponent:
-        RouterTestingModule.withRoutes([])
-      ],
       providers: [
         CanDeactivateGuardService,
-        // Now, for the cool stuff!
-        // We're going to treat a component like a service and "provide" it!
-        {
-          provide: GuardedComponent, // Yes, you can 'provide' a component here!
-          useClass: MockComponent // But we're mocking it away.
-        },
-        // Also have to bring in the dependencies of GuardedComponent:
-        ConfirmationService
+        MockComponent
       ]
     });
     service = TestBed.get(CanDeactivateGuardService);
     // Ask for the real, get the mock:
-    mockComponent = TestBed.get(GuardedComponent);
+    testComponent = TestBed.get(MockComponent);
   });
 
-  it('should be created', () => {
+  it('expect service to instantiate', () => {
     expect(service).toBeTruthy();
   });
 
   it('can route if unguarded', () => {
     // Mock GuardedComponent.isGuarded = false, which returns true from canActivate()
-    mockComponent.returnValue = true;
-    expect(service.canDeactivate(mockComponent)).toBeTruthy();
+    testComponent.returnValue = true;
+    expect(service.canDeactivate(testComponent)).toBeTruthy();
   });
 
   it('will route if guarded and user accepted the dialog', () => {
     // Mock the behavior of the GuardedComponent:
     const subject$ = new Subject<boolean>();
-    mockComponent.returnValue = subject$.asObservable();
-    const canDeactivate$ = <Observable<boolean>>service.canDeactivate(mockComponent);
+    testComponent.returnValue = subject$.asObservable();
+    const canDeactivate$ = <Observable<boolean>>service.canDeactivate(testComponent);
     canDeactivate$.subscribe((deactivate) => {
       // This is the real test!
       expect(deactivate).toBeTruthy();
@@ -71,8 +59,8 @@ describe('CanDeactivateGuardService', () => {
   it('will not route if guarded and user rejected the dialog', () => {
     // Mock the behavior of the GuardedComponent:
     const subject$ = new Subject<boolean>();
-    mockComponent.returnValue = subject$.asObservable();
-    const canDeactivate$ = <Observable<boolean>>service.canDeactivate(mockComponent);
+    testComponent.returnValue = subject$.asObservable();
+    const canDeactivate$ = <Observable<boolean>>service.canDeactivate(testComponent);
     canDeactivate$.subscribe((deactivate) => {
       // This is the real test!
       expect(deactivate).toBeFalsy();
