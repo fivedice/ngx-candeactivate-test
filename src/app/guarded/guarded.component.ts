@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/primeng';
+import { CanDeactivateGuarded } from '../can-deactivate-guarded';
 
 @Component({
   selector: 'fdp-guarded',
   templateUrl: './guarded.component.html',
   styleUrls: ['./guarded.component.scss']
 })
-export class GuardedComponent {
+export class GuardedComponent implements CanDeactivateGuarded {
 
   isGuarded = false;
 
