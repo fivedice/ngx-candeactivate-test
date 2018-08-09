@@ -1,0 +1,16 @@
+<p>
+  Guarded
+</p>
+<button pButton
+        type="button"
+        (click)="goHome()"
+        label="Go Home"></button>
+
+<button pButton
+        type="button"
+        (click)="toggleGuard()"
+        label="Toggle Guard"></button>
+
+Is guarded: {{ isGuarded }}
+
+<p-confirmDialog></p-confirmDialog>
